@@ -1,0 +1,22 @@
+#!/bin/bash
+
+[ -z "${RELEASE}" ] && echo "RELEASE is not specified" && exit 1
+[ -z "${HOST_BUILD_DIR}" ] && echo "HOST_BUILD_DIR is not specified" && exit 1
+
+DIR=$(realpath $(dirname $0))
+
+# build the builder
+${DIR}/build-builder.sh
+
+# for now workdir is used for everything
+DEY_BUILD_DIR=/workdir/build/dey-build
+DL_DIR=/workdir/build/downloads
+SSTATE_DIR=/workdir/build/sstate-cache
+
+# start container
+docker run --rm -it \
+    -v ${HOST_BUILD_DIR}:/workdir/ \
+    -e DEY_BUILD_DIR=${DEY_BUILD_DIR} \
+    -e DL_DIR=${DL_DIR} \
+    -e SSTATE_DIR=${SSTATE_DIR} \
+    azure-digi-builder:${RELEASE}

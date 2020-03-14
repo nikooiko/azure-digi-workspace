@@ -1,0 +1,52 @@
+#!/bin/bash
+
+# Make sure all arguments are specified
+[ -z "${DEY_INSTALL_PATH}" ] && echo "DEY_INSTALL_PATH is not specified" && exit 1
+[ -z "${DEY_PLATFORM}" ] && echo "DEY_PLATFORM is not specified" && exit 1
+[ -z "${DEY_BUILD_DIR}" ] && echo "DEY_BUILD_DIR is not specified" && exit 1
+[ -z "${DL_DIR}" ] && echo "DL_DIR is not specified" && exit 1
+[ -z "${SSTATE_DIR}" ] && echo "SSTATE_DIR is not specified" && exit 1
+
+# Make sure all needed directories exist
+install -D -d ${DEY_BUILD_DIR}/${DEY_PLATFORM}
+install -D -d ${DL_DIR}
+install -D -d ${SSTATE_DIR}
+
+cd ${DEY_BUILD_DIR}/${DEY_PLATFORM}
+
+echo "Generating Yocto Dey environment"
+rm -rf conf # make sure conf is cleared
+yes | source ${DEY_INSTALL_PATH}/mkproject.sh -p ${DEY_PLATFORM} > /dev/null
+echo ""
+
+# Enable Yocto Dey environment
+echo "Enabling Yocto Dey environment"
+source dey-setup-environment
+echo ""
+
+echo "Adding azure iot-edge layers"
+bitbake-layers add-layer ${DEY_INSTALL_PATH}/sources/meta-openembedded/meta-filesystems # needed by meta-virtualization
+bitbake-layers add-layer ${AZURE_INSTALL_PATH}/sources/meta-rust
+bitbake-layers add-layer ${AZURE_INSTALL_PATH}/sources/meta-virtualization
+bitbake-layers add-layer ${AZURE_INSTALL_PATH}/sources/meta-iotedge
+echo ""
+
+echo "Enabling recipes"
+# Retrieved from open embedded meta layers
+# TODO: later on add more recipes
+# echo 'IMAGE_INSTALL_append = " minicom"' >> conf/local.conf
+# echo 'IMAGE_INSTALL_append = " socat"' >> conf/local.conf
+# echo 'IMAGE_INSTALL_append = " tcpdump"' >> conf/local.conf
+# echo 'IMAGE_INSTALL_append = " vim"' >> conf/local.conf
+# Retrieved from meta-iotedge
+echo 'IMAGE_INSTALL_append = " iotedge-cli"' >> conf/local.conf
+echo 'IMAGE_INSTALL_append = " iotedge-daemon"' >> conf/local.conf
+echo ""
+
+echo "Configuring build paths"
+echo "DL_DIR = \"${DL_DIR}\"" >> conf/local.conf
+echo "SSTATE_DIR = \"${SSTATE_DIR}\"" >> conf/local.conf
+echo ""
+
+echo "Setup project finished!"
+echo ""
