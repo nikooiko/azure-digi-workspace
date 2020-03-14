@@ -7,8 +7,10 @@
 
 Steps to build firmware for **ccimx6ulsbc**:
 - `source ./setup-environment`
-- `build-interractive`
-- `build-ccimx6ulsbc`
+- `build-interractive` (host env)
+- `build-ccimx6ulsbc` (builder env)
+
+NOTE: `build-help` to see all available build commands (supports host and builder)
 
 ## Project Structure
 - **builder**: The docker-based builder files

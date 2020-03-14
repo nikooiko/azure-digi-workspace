@@ -1,0 +1,4 @@
+#!/bin/bash
+
+echo "Builder's build Commands:"
+echo "- 'build-ccimx6ulsbc': building ccimx6ulsbc image with iotedge"

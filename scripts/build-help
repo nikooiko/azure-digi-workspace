@@ -1,0 +1,9 @@
+#!/bin/bash
+
+DIR=$(realpath $(dirname $0))
+
+echo "Host's build Commands:"
+echo "- 'build-builder': creates docker image for builder"
+echo "- 'build-interractive': starts an interactive container using builder image"
+echo ""
+${DIR}/../builder/scripts/build-help

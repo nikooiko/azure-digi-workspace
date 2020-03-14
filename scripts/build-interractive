@@ -6,7 +6,7 @@
 DIR=$(realpath $(dirname $0))
 
 # build the builder
-${DIR}/build-builder.sh
+${DIR}/build-builder
 
 # for now workdir is used for everything
 DEY_BUILD_DIR=/workdir/build/dey-build
