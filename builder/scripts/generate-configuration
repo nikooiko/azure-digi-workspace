@@ -41,11 +41,16 @@ echo "Enabling recipes"
 # Retrieved from meta-iotedge
 echo 'IMAGE_INSTALL_append = " iotedge-cli"' >> conf/local.conf
 echo 'IMAGE_INSTALL_append = " iotedge-daemon"' >> conf/local.conf
+echo 'IMAGE_INSTALL_append = " libiothsm-std"' >> conf/local.conf
 echo ""
 
 echo "Configuring build paths"
 echo "DL_DIR = \"${DL_DIR}\"" >> conf/local.conf
 echo "SSTATE_DIR = \"${SSTATE_DIR}\"" >> conf/local.conf
+echo ""
+
+echo "Enabling additional features"
+echo "DISTRO_FEATURES_append += \" virtualization\"" >> conf/local.conf
 echo ""
 
 echo "Setup project finished!"

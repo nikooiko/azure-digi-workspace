@@ -5,3 +5,4 @@ export DEY_PLATFORM=ccimx6ulsbc
 DIR=$(realpath $(dirname $0))
 source ${DIR}/generate-configuration
 bitbake core-image-base
+bitbake core-image-base-swu
